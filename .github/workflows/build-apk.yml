@@ -1,5 +1,8 @@
-name: Build APK
+
+     name: Build APK
 on: workflow_dispatch
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,8 +13,6 @@ jobs:
           distribution: temurin
           java-version: '17'
       - run: cd launcher && chmod +x gradlew && ./gradlew --no-daemon assembleRelease
-      - uses: actions/upload-artifact@v4
-        with:
-          name: glass-tv-apk
-          path: launcher/app/build/outputs/apk/release/*.apk
-          
+      - run: gh release create apk-latest launcher/app/build/outputs/apk/release/*.apk --title "Glass TV APK" --notes "Build"
+        env:
+          GH_TOKEN: ${{ github.token }}     
