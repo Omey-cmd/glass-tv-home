@@ -25,19 +25,19 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Clean Waktu Solat for Putrajaya (JAKIM Zone WLY01).
+ * Clean Waktu Solat for Johor Bahru (JAKIM Zone JHR02).
  * Fetches official JAKIM e-solat timetable, caches locally, and includes
  * an accurate solar-calculation fallback so it never fails offline.
  */
 final class PrayerTimes {
     private static final String TAG = "TvHome.Prayer";
     private static final String PREFS_NAME = "prayer_times_cache";
-    private static final String KEY_JSON = "takwim_wly01";
+    private static final String KEY_JSON = "takwim_jhr02";
     private static final String KEY_MONTH = "takwim_month";
 
-    // Coordinates for Putrajaya
-    private static final double LATITUDE = 2.9264;
-    private static final double LONGITUDE = 101.6964;
+    // Coordinates for Johor Bahru
+    private static final double LATITUDE = 1.4927;
+    private static final double LONGITUDE = 103.7414;
     private static final double TIMEZONE = 8.0;
 
     private static final String[] PRAYER_NAMES = {"Subuh", "Syuruk", "Zohor", "Asar", "Maghrib", "Isyak"};
@@ -57,7 +57,7 @@ final class PrayerTimes {
                     return; // already have this month's takwim
                 }
 
-                URL url = new URL("https://api.waktusolat.app/v2/solat/WLY01");
+                URL url = new URL("https://api.waktusolat.app/v2/solat/JHR02");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setConnectTimeout(8000);
                 conn.setReadTimeout(8000);
@@ -78,7 +78,7 @@ final class PrayerTimes {
                     if (onUpdated != null) {
                         new Handler(Looper.getMainLooper()).post(onUpdated);
                     }
-                    Log.i(TAG, "Synced Putrajaya prayer times successfully");
+                    Log.i(TAG, "Synced JHR02 prayer times successfully");
                 }
             } catch (Exception e) {
                 Log.w(TAG, "Prayer sync offline/failed: " + e.getMessage());
@@ -119,7 +119,7 @@ final class PrayerTimes {
         }
         if (nextIdx == -1) nextIdx = 0;
 
-        SimpleDateFormat timeFmt = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        SimpleDateFormat timeFmt = new SimpleDateFormat("h:mm a", Locale.ENGLISH);
         PrayerItem[] items = new PrayerItem[6];
         for (int i = 0; i < 6; i++) {
             items[i] = new PrayerItem(
@@ -155,16 +155,16 @@ final class PrayerTimes {
         }
         if (nextIdx == -1) nextIdx = 0; // After Isyak -> Subuh next morning
 
-        SimpleDateFormat timeFmt = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        SimpleDateFormat timeFmt = new SimpleDateFormat("h:mm a", Locale.ENGLISH);
 
         SpannableStringBuilder sb = new SpannableStringBuilder();
 
-        // LINE 1: PUTRAJAYA  •  SETERUSNYA: ASAR 16:18
+        // LINE 1: JOHOR BAHRU  •  SETERUSNYA: ASAR 16:18
         String nextName = PRAYER_NAMES[nextIdx].toUpperCase(Locale.ROOT);
         String nextTime = timeFmt.format(new Date(times[nextIdx]));
 
         int l1Start = sb.length();
-        sb.append("PUTRAJAYA  •  SETERUSNYA: ").append(nextName).append(" ").append(nextTime);
+        sb.append("JOHOR BAHRU  •  SETERUSNYA: ").append(nextName).append(" ").append(nextTime);
         int l1End = sb.length();
         sb.setSpan(new ForegroundColorSpan(0xFFFFFFFF), l1Start, l1End, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         sb.setSpan(new StyleSpan(Typeface.BOLD), l1Start, l1End, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -223,7 +223,7 @@ final class PrayerTimes {
         return null;
     }
 
-    /** Astronomical calculation fallback for Putrajaya. */
+    /** Astronomical calculation fallback for Johor Bahru. */
     private static long[] calculateFallback(Calendar cal) {
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH) + 1;
@@ -314,7 +314,7 @@ final class PrayerTimes {
         }
         if (nextIdx == -1) nextIdx = 0;
 
-        SimpleDateFormat sdf = new SimpleDateFormat("h:mm a", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("h:mm a", Locale.ENGLISH);
         for (int i = 0; i < times.length; i++) {
             boolean isNext = (i == nextIdx);
             boolean isPast = (times[i] < nowMs);
@@ -337,8 +337,8 @@ final class PrayerTimes {
                 break;
             }
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("h:mm a", Locale.getDefault());
-        return PRAYER_NAMES[nextIdx] + " • " + sdf.format(new Date(times[nextIdx])) + " (Putrajaya)";
+        SimpleDateFormat sdf = new SimpleDateFormat("h:mm a", Locale.ENGLISH);
+        return PRAYER_NAMES[nextIdx] + " • " + sdf.format(new Date(times[nextIdx])) + " (Johor Bahru)";
     }
 
     /** Returns Islamic Hijrah date (e.g. "11 Jamadilawal 1448H"). */
