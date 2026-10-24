@@ -1882,9 +1882,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         Calendar cal = Calendar.getInstance();
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         String period;
-        if (hour >= 1 && hour < 12) period = "PG";
-        else if (hour >= 12 && hour < 19) period = "PTG";
-        else period = "MLM";
+        period = hour < 12 ? "AM" : "PM";
 
         int day = cal.get(Calendar.DAY_OF_MONTH);
         int month = cal.get(Calendar.MONTH);
@@ -2007,7 +2005,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         showMenu(panel, rows, anchor, width, false);
     }
 
-    /** Shows an Apple TV-style frosted glass Putrajaya prayer timetable popup. */
+    /** Shows an Apple TV-style frosted glass Johor Bahru prayer timetable popup. */
     private void showPrayerPopup() {
         if (openMenu != null) return;
         SoundEffects.playSelect();
@@ -2016,8 +2014,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         LinearLayout rows = panel.findViewById(R.id.rows);
         Runnable close = () -> closeMenu(false);
 
-        // Header: Putrajaya Zone WLY01
-        addInputRow(rows, close, R.drawable.ic_settings, "Waktu Solat Putrajaya", TvInputManager.INPUT_STATE_CONNECTED, () -> {});
+        // Header: Johor Bahru Zone JHR02
+        addInputRow(rows, close, R.drawable.ic_settings, "Waktu Solat Johor Bahru", TvInputManager.INPUT_STATE_CONNECTED, () -> {});
 
         // Date row: Islamic Hijri
         addInputRow(rows, close, R.drawable.ic_input, PrayerTimes.getHijriDate(), -1, () -> {});

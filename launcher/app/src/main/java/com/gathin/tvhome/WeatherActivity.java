@@ -104,7 +104,7 @@ public class WeatherActivity extends Activity {
         if (w.location.contains("MELAKA")) {
             aqiStationsSub.setText("Alor Gajah 97  •  Bukit Rambai 110");
         } else {
-            aqiStationsSub.setText("Putrajaya " + w.aqi + "  •  Petaling Jaya 65  •  Cheras 58");
+            aqiStationsSub.setText("Johor Bahru " + w.aqi);
         }
 
         aqiModelSub.setText(String.format(Locale.ROOT, "Model US AQI %d  •  PM2.5 %.1f  •  PM10 %.1f µg/m³",

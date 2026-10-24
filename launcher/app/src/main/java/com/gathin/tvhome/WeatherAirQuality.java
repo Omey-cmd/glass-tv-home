@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Live weather and air pollutant index (API / IPU) for Putrajaya / Malaysia.
+ * Live weather and air pollutant index (API / IPU) for Johor Bahru / Malaysia.
  * Fetches current temperature, hourly forecast, 7-day forecast from Open-Meteo,
  * and air quality index (PM2.5 / AQI / JAS API).
  * Caches results locally and refreshes every 30 minutes in background.
@@ -42,9 +42,9 @@ final class WeatherAirQuality {
     private static final String KEY_LAST_UPDATE = "last_update";
     private static final long REFRESH_INTERVAL_MS = 30L * 60 * 1000; // 30 minutes
 
-    // Putrajaya coordinates
-    private static final double LATITUDE = 2.9264;
-    private static final double LONGITUDE = 101.6964;
+    // Johor Bahru coordinates
+    private static final double LATITUDE = 1.4927;
+    private static final double LONGITUDE = 103.7414;
 
     static class HourlyItem {
         final String time;
@@ -378,10 +378,10 @@ final class WeatherAirQuality {
         String aqiStatus = getAqiStatus(aqi, isMalay);
         int aqiColor = getAqiColor(aqi);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("h:mm a", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("h:mm a", Locale.ENGLISH);
         String updated = sdf.format(new Date());
 
-        return new FullWeather("PUTRAJAYA", temp, apparentTemp,
+        return new FullWeather("JOHOR BAHRU", temp, apparentTemp,
                 getWeatherCondition(code, isMalay), getWeatherIcon(code),
                 highTemp, lowTemp, humidity, windSpeed, uvIndex, rainChanceToday,
                 sunrise, sunset, aqi, aqiStatus, aqiColor, pm25, pm10, updated, hourly, daily);
